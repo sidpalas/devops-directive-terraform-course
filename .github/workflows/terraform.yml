@@ -72,20 +72,12 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
-      - name: Check tag
-        id: check-tag
-        run: |
-          if [[ ${{ github.event.ref }} =~ ^refs/tags/vd+\.d+\.d+$ ]]; then echo ::set-output name=env::production
-          elif [[ github.ref == 'refs/heads/main' ]]; then echo ::set-output name=env::staging
-          else ::set-output name=env::unknown
-          fi
-
       - name: Terraform Apply Staging
-        if: steps.plan.check-tag == 'staging' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         working-directory: 07-managing-multiple-environments/file-structure/staging
         run: terraform apply -var db_pass=${{secrets.DB_PASS }} -auto-approve
 
       - name: Terraform Apply Production
-        if: steps.plan.check-tag == 'production' && github.event_name == 'push'
+        if: github.ref =~ ^refs/tags/vd+\.d+\.d+$ && github.event_name == 'push'
         working-directory: 07-managing-multiple-environments/file-structure/production
         run: terraform apply -var db_pass=${{secrets.DB_PASS }} -auto-approve
