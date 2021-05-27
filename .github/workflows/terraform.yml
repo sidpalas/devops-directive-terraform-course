@@ -78,6 +78,6 @@ jobs:
         run: terraform apply -var db_pass=${{secrets.DB_PASS }} -auto-approve
 
       - name: Terraform Apply Production
-        if: github.ref =~ ^refs/tags/vd+\.d+\.d+$ && github.event_name == 'push'
+        if: ${{ github.ref =~ ^refs/tags/vd+\.d+\.d+$ }} && github.event_name == 'push'
         working-directory: 07-managing-multiple-environments/file-structure/production
         run: terraform apply -var db_pass=${{secrets.DB_PASS }} -auto-approve
