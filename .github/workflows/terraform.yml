@@ -36,7 +36,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: terraform plan -no-color
+        run: terraform plan -var db_pass=${{secrets.DB_PASS }} -no-color
         continue-on-error: true
 
       - uses: actions/github-script@0.9.0
@@ -72,4 +72,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve
+        run: terraform apply -var db_pass=${{secrets.DB_PASS }} -auto-approve
