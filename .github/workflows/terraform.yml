@@ -85,6 +85,7 @@ jobs:
         if: github.event_name == 'push'
         working-directory: 07-managing-multiple-environments/file-structure/global
         run: |
+          echo $PWD
           terraform init
           terraform apply -auto-approve
 
