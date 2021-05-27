@@ -35,12 +35,12 @@ module "web_app" {
   source = "../../../06-organization-and-modules/web-app-module"
 
   # Input Variables
-  bucket_name = "devops-directive-web-app-data-${local.environment_name}"
-  domain      = "mysuperawesomesite.com"
+  bucket_name      = "devops-directive-web-app-data-${local.environment_name}"
+  domain           = "mysuperawesomesite.com"
   environment_name = local.environment_name
-  instance_type = "t2.small"
-  create_dns_zone = true
-  db_name     = "${local.environment_name}mydb"
-  db_user     = "foo"
-  db_pass     = var.db_pass
+  instance_type    = "t2.small"
+  create_dns_zone  = true
+  db_name          = "${local.environment_name}mydb"
+  db_user          = "foo"
+  db_pass          = var.db_pass
 }

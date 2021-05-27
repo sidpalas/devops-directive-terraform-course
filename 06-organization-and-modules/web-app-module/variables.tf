@@ -8,14 +8,14 @@ variable "region" {
 
 variable "app_name" {
   description = "Name of the web application"
-  type = string
-  default = "web-app"
+  type        = string
+  default     = "web-app"
 }
 
 variable "environment_name" {
   description = "Deployment environment (dev/staging/production)"
-  type = string
-  default = "dev"
+  type        = string
+  default     = "dev"
 }
 
 # EC2 Variables
@@ -43,8 +43,8 @@ variable "bucket_name" {
 
 variable "create_dns_zone" {
   description = "If true, create new route53 zone, if false read existing route53 zone"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "domain" {
