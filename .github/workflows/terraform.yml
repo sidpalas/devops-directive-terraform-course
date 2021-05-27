@@ -83,7 +83,7 @@ jobs:
 
       - name: Terraform Apply Global
         if: github.event_name == 'push'
-        working-directory: ../global
+        # working-directory: ../global
         run: |
           echo $PWD
           terraform init
@@ -96,7 +96,7 @@ jobs:
 
       - name: Terraform Apply Production
         if: steps.check-tag.outputs.environment == 'production' && github.event_name == 'push'
-        working-directory: ../production
+        # working-directory: ../production
         run: |
           terraform init
           terraform apply -var db_pass=${{secrets.DB_PASS }} -auto-approve
