@@ -80,6 +80,9 @@ jobs:
           else echo ::set-output name=environment::unknown
           fi
 
+      - name: Echo environment
+        run: echo ${{ steps.check-tag.outputs.environment }} 
+
       - name: Terraform Apply Staging
         if: steps.check-tag.outputs.environment == 'production' && github.event_name == 'push'
         working-directory: 07-managing-multiple-environments/file-structure/staging
