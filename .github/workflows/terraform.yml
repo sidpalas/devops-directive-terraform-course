@@ -77,7 +77,7 @@ jobs:
         run: |
           if [[ ${{ github.ref }} =~ ^refs/tags/vd+\.d+\.d+$ ]]; then echo ::set-output name=environment::production
           elif [[ github.ref == 'refs/heads/main' ]]; then echo ::set-output name=environment::staging
-          else ::set-output name=environment::unknown
+          else echo ::set-output name=environment::unknown
           fi
 
       - name: Terraform Apply Staging
