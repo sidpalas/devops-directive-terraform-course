@@ -87,7 +87,7 @@ jobs:
 
       - name: Terraform Apply Global
         if: github.event_name == 'push'
-        # working-directory: 07-managing-multiple-environments/file-structure/global
+        working-directory: 07-managing-multiple-environments/file-structure/global
         run: |
           echo $PWD
           terraform init
@@ -95,7 +95,6 @@ jobs:
 
       - name: Terraform Apply Staging
         if: steps.check-tag.outputs.environment == 'staging' && github.event_name == 'push'
-        # working-directory: 07-managing-multiple-environments/file-structure/staging
         run: terraform apply -var db_pass=${{secrets.DB_PASS }} -auto-approve
 
       - name: Terraform Apply Production
