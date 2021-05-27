@@ -1,52 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.0"
-    }
-  }
-}
-
-
-
-resource "aws_instance" "instance_1" {
-  ami             = var.ami
-  instance_type   = var.instance_type
-  security_groups = [aws_security_group.instances.name]
-  user_data       = <<-EOF
-              #!/bin/bash
-              echo "Hello, World 1" > index.html
-              python3 -m http.server 8080 &
-              EOF
-}
-
-resource "aws_instance" "instance_2" {
-  ami             = var.ami
-  instance_type   = var.instance_type
-  security_groups = [aws_security_group.instances.name]
-  user_data       = <<-EOF
-              #!/bin/bash
-              echo "Hello, World 2" > index.html
-              python3 -m http.server 8080 &
-              EOF
-}
-
-resource "aws_s3_bucket" "bucket" {
-  bucket        = var.bucket_name
-  force_destroy = true
-  versioning {
-    enabled = true
-  }
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-}
-
 data "aws_vpc" "default_vpc" {
   default = true
 }
@@ -56,7 +7,7 @@ data "aws_subnet_ids" "default_subnet" {
 }
 
 resource "aws_security_group" "instances" {
-  name = "instance-security-group"
+  name = "${var.app_name}-${var.environment_name}-instance-security-group"
 }
 
 resource "aws_security_group_rule" "allow_http_inbound" {
@@ -89,7 +40,7 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_target_group" "instances" {
-  name     = "example-target-group"
+  name     = "${var.app_name}-${var.environment_name}-tg"
   port     = 8080
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default_vpc.id
@@ -135,7 +86,7 @@ resource "aws_lb_listener_rule" "instances" {
 
 
 resource "aws_security_group" "alb" {
-  name = "alb-security-group"
+  name = "${var.app_name}-${var.environment_name}-alb-security-group"
 }
 
 resource "aws_security_group_rule" "allow_alb_http_inbound" {
@@ -162,37 +113,9 @@ resource "aws_security_group_rule" "allow_alb_all_outbound" {
 
 
 resource "aws_lb" "load_balancer" {
-  name               = "web-app-lb"
+  name               = "${var.app_name}-${var.environment_name}-web-app-lb"
   load_balancer_type = "application"
   subnets            = data.aws_subnet_ids.default_subnet.ids
   security_groups    = [aws_security_group.alb.id]
 
-}
-
-resource "aws_route53_zone" "primary" {
-  name = var.domain
-}
-
-resource "aws_route53_record" "root" {
-  zone_id = aws_route53_zone.primary.zone_id
-  name    = var.domain
-  type    = "A"
-
-  alias {
-    name                   = aws_lb.load_balancer.dns_name
-    zone_id                = aws_lb.load_balancer.zone_id
-    evaluate_target_health = true
-  }
-}
-
-resource "aws_db_instance" "db_instance" {
-  allocated_storage   = 20
-  storage_type        = "standard"
-  engine              = "postgres"
-  engine_version      = "12.5"
-  instance_class      = "db.t2.micro"
-  name                = var.db_name
-  username            = var.db_user
-  password            = var.db_pass
-  skip_final_snapshot = true
 }
