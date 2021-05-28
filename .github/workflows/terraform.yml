@@ -75,17 +75,25 @@ jobs:
       - name: Check tag
         id: check-tag
         run: |
-          if [[ ${{ github.ref }} =~ ^refs/tags/vd+\.d+\.d+$ ]]; then echo ::set-output name=environment::production
-          elif [[ github.ref == 'refs/heads/main' ]]; then echo ::set-output name=environment::staging
+          if [[ ${{ github.ref }} =~ "^refs\/tags\/v[0-9]+\.[0-9]+\.[0-9]+$" ]]; then echo ::set-output name=environment::production
+          elif [[ ${{ github.ref }} == 'refs/heads/main' ]]; then echo ::set-output name=environment::staging
           else echo ::set-output name=environment::unknown
           fi
 
+      - name: Terraform Apply Global
+        if: github.event_name == 'push'
+        working-directory: 07-managing-multiple-environments/file-structure/global
+        run: |
+          terraform init
+          terraform apply -auto-approve
+
       - name: Terraform Apply Staging
-        if: steps.check-tag.outputs.environment == 'production' && github.event_name == 'push'
-        working-directory: 07-managing-multiple-environments/file-structure/staging
+        if: steps.check-tag.outputs.environment == 'staging' && github.event_name == 'push'
         run: terraform apply -var db_pass=${{secrets.DB_PASS }} -auto-approve
 
       - name: Terraform Apply Production
-        if: steps.check-tag.outputs.environment == 'staging' && github.event_name == 'push'
+        if: steps.check-tag.outputs.environment == 'production' && github.event_name == 'push'
         working-directory: 07-managing-multiple-environments/file-structure/production
-        run: terraform apply -var db_pass=${{secrets.DB_PASS }} -auto-approve
+        run: |
+          terraform init
+          terraform apply -var db_pass=${{secrets.DB_PASS }} -auto-approve
