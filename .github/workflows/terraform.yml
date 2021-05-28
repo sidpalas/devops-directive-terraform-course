@@ -81,7 +81,7 @@ jobs:
           fi
 
       - name: Terraform Apply Global
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || github.event_name == 'release'
         working-directory: 07-managing-multiple-environments/file-structure/global
         run: |
           terraform init
@@ -92,7 +92,7 @@ jobs:
         run: terraform apply -var db_pass=${{secrets.DB_PASS }} -auto-approve
 
       - name: Terraform Apply Production
-        if: steps.check-tag.outputs.environment == 'production' && github.event_name == 'push'
+        if: steps.check-tag.outputs.environment == 'production' && github.event_name == 'release'
         working-directory: 07-managing-multiple-environments/file-structure/production
         run: |
           terraform init
