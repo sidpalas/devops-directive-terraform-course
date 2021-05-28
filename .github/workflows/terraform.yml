@@ -28,10 +28,6 @@ jobs:
           terraform_version: 0.15.4
 
       - name: Terraform Format
-        id: ls
-        run: ls ..
-
-      - name: Terraform Format
         id: fmt
         run: terraform fmt -check
 
