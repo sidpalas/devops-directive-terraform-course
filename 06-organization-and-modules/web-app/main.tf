@@ -21,8 +21,14 @@ provider "aws" {
   region = "us-east-1"
 }
 
-variable "db_pass" {
-  description = "password for database"
+variable "db_pass_1" {
+  description = "password for database #2"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_pass_2" {
+  description = "password for database #2"
   type        = string
   sensitive   = true
 }
@@ -39,7 +45,7 @@ module "web_app_1" {
   create_dns_zone  = true
   db_name          = "webapp1db"
   db_user          = "foo"
-  db_pass          = var.db_pass
+  db_pass          = var.db_pass_1
 }
 
 module "web_app_2" {
@@ -53,6 +59,6 @@ module "web_app_2" {
   instance_type    = "t2.small"
   create_dns_zone  = true
   db_name          = "webapp2db"
-  db_user          = "foo"
-  db_pass          = var.db_pass
+  db_user          = "bar"
+  db_pass          = var.db_pass_2
 }

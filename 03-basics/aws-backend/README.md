@@ -1,11 +1,7 @@
 Steps to initialize backend in AWS and manage it with Terraform:
 
 1) Use config from `bootstrap` (init, plan, apply) to provision s3 bucket and dynamoDB table with local state
-2) copy state file into import-bootstrap 
-   1) cp terraform.tfstate ../import-bootstrap
-3) Initialize within `import-bootstrap` using `terraform init`
-4) Uncomment out s3 backend provider:
-
+2) Uncomment the remote backend configuration
 ```
   backend "s3" {
     bucket         = "devops-directive-tf-state"
@@ -16,7 +12,7 @@ Steps to initialize backend in AWS and manage it with Terraform:
   }
 ```
 
-4) Reinitialize with `terraform init`:
+1) Reinitialize with `terraform init`:
 
 ```
 Do you want to copy existing state to the new backend?

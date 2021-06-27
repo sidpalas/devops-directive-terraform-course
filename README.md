@@ -26,7 +26,7 @@ Introduces the concepts of variables which enable Terraform configurations to be
 
 ## 05 - Language Features
 
-Describes additional features of the Hashicorp Programming Language.
+Describes additional features of the Hashicorp Configuration Language (HCL).
 
 ## 06 - Organization and Modules
 
