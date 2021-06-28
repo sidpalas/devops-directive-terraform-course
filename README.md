@@ -10,11 +10,11 @@ High level overview of the evolution of cloud computing and infrastructure as co
 
 This module does not have any corresponding code.
 
-## 02 - Overview
+## 02 - Overview + Setup
 
 Terraform overview and setup instructions.
 
-Includes super basic `hello world` terraform config to provision a single AWS EC2 instance.
+Includes basic `hello world` terraform config to provision a single AWS EC2 instance.
 
 ## 03 - Basics
 
