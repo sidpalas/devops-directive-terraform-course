@@ -32,7 +32,7 @@ locals {
 }
 
 module "web_app" {
-  source = "../../05-organization-and-modules/web-app-module"
+  source = "../../06-organization-and-modules/web-app-module"
 
   # Input Variables
   bucket_name      = "devops-directive-web-app-data-${local.environment_name}"
