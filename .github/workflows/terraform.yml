@@ -1,7 +1,7 @@
 name: "Terraform"
 
 on:
-  # Uncomment to enable staging
+  # Uncomment to enable staging deployment
   # push:
   #   branches:
   #     - main
@@ -27,6 +27,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.1
+          terraform_wrapper: false
 
       - name: Terraform Format
         id: fmt
@@ -39,6 +40,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
+        # Route 53 zone must already exist for this to succeed!
         run: terraform plan -var db_pass=${{secrets.DB_PASS }} -no-color
         continue-on-error: true
 
@@ -72,6 +74,16 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
+
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.15.5'
+          
+      - name : Terratest Execution
+        if: github.event_name == 'pull_request'
+        working-directory: 08-testing/tests/terratest
+        run: |
+          go test . -v timeout 10m
 
       - name: Check tag
         id: check-tag
