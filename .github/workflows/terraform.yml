@@ -1,10 +1,10 @@
 name: "Terraform"
 
 on:
-  # Uncomment to enable staging
-  push:
-    branches:
-      - main
+  # Uncomment to enable staging deployment
+  # push:
+  #   branches:
+  #     - main
   release:
     types: [published]
   pull_request:
@@ -74,12 +74,15 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.15.5'
+          
       - name : Terratest Execution
         if: github.event_name == 'pull_request'
+        working-directory: 08-testing/tests/terratest
         run: |
-          echo hello
-      # TODO: Add Terratest Execution Step to workflow
-      # Example: https://github.com/gruntwork-io/terratest/blob/bcfebbd72e93733ae97dc5a73b00b0c17d8b7258/.github/workflows/ci.yml#L81
+          go test -v timeout 10m
 
       - name: Check tag
         id: check-tag
