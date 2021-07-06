@@ -82,7 +82,7 @@ jobs:
         if: github.event_name == 'pull_request'
         working-directory: 08-testing/tests/terratest
         run: |
-          go test -v timeout 10m
+          go test . -v timeout 10m
 
       - name: Check tag
         id: check-tag
