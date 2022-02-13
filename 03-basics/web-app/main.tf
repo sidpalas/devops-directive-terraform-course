@@ -182,12 +182,12 @@ resource "aws_lb" "load_balancer" {
 }
 
 resource "aws_route53_zone" "primary" {
-  name = "mysuperawesomesite.com"
+  name = "devopsdeployed.com"
 }
 
 resource "aws_route53_record" "root" {
   zone_id = aws_route53_zone.primary.zone_id
-  name    = "mysuperawesomesite.com"
+  name    = "devopsdeployed.com"
   type    = "A"
 
   alias {

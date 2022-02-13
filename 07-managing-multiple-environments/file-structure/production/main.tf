@@ -36,7 +36,7 @@ module "web_app" {
 
   # Input Variables
   bucket_name      = "devops-directive-web-app-data-${local.environment_name}"
-  domain           = "mysuperawesomesite.com"
+  domain           = "devopsdeployed.com"
   environment_name = local.environment_name
   instance_type    = "t2.small"
   create_dns_zone  = false

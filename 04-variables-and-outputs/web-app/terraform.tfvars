@@ -1,5 +1,5 @@
 bucket_name = "devops-directive-web-app-data"
-domain      = "mysuperawesomesite.com"
+domain      = "devopsdeployed.com"
 db_name     = "mydb"
 db_user     = "foo"
 # db_pass = "foobarbaz"

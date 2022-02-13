@@ -1,4 +1,4 @@
-- Note about using separate AWS projects (avoids prefix issues, improved IAM control)
+- Note about using separate AWS accounts (avoids prefix issues, improved IAM control)
   - Cover this in advanced section?
   
 ```

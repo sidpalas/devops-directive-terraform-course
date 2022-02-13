@@ -22,7 +22,7 @@ provider "aws" {
 }
 
 variable "db_pass_1" {
-  description = "password for database #2"
+  description = "password for database #1"
   type        = string
   sensitive   = true
 }
@@ -38,7 +38,7 @@ module "web_app_1" {
 
   # Input Variables
   bucket_name      = "web-app-1-devops-directive-web-app-data"
-  domain           = "mysuperawesomesite.com"
+  domain           = "devopsdeployed.com"
   app_name         = "web-app-1"
   environment_name = "production"
   instance_type    = "t2.small"
@@ -53,7 +53,7 @@ module "web_app_2" {
 
   # Input Variables
   bucket_name      = "web-app-2-devops-directive-web-app-data"
-  domain           = "myothersuperawesomesite.com"
+  domain           = "anotherdevopsdeployed.com"
   app_name         = "web-app-2"
   environment_name = "production"
   instance_type    = "t2.small"
