@@ -1,17 +1,13 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.0"
-    }
-  }
-}
-
 provider "aws" {
   region = "us-east-1"
+  access_key=var.AWS_ACCESS_KEY
+  secret_key=var.AWS_SECRET_KEY 
 }
+resource "aws_instance" "web" {
+  ami           = "ami-02dc8ad50da58fffd"
+  instance_type = "t3.micro"
 
-resource "aws_instance" "example" {
-  ami           = "ami-011899242bb902164" # Ubuntu 20.04 LTS // us-east-1
-  instance_type = "t2.micro"
+  tags = {
+    Name = "HelloWorld"
+  }
 }
