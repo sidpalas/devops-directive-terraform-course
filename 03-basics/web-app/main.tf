@@ -46,15 +46,20 @@ resource "aws_instance" "instance_2" {
 resource "aws_s3_bucket" "bucket" {
   bucket        = "devops-directive-web-app-data"
   force_destroy = true
-  versioning {
-    enabled = true
-  }
+}
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
+resource "aws_s3_bucket_versioning" "bucket_versioning" {
+  bucket = aws_s3_bucket.bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_crypto_conf" {
+  bucket        = aws_s3_bucket.bucket.bucket
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
   }
 }
@@ -198,13 +203,18 @@ resource "aws_route53_record" "root" {
 }
 
 resource "aws_db_instance" "db_instance" {
-  allocated_storage   = 20
-  storage_type        = "standard"
-  engine              = "postgres"
-  engine_version      = "12.5"
-  instance_class      = "db.t2.micro"
-  name                = "mydb"
-  username            = "foo"
-  password            = "foobarbaz"
-  skip_final_snapshot = true
+  allocated_storage          = 20
+  # This allows any minor version within the major engine_version
+  # defined below, but will also result in allowing AWS to auto
+  # upgrade the minor version of your DB. This may be too risky
+  # in a real production environment.
+  auto_minor_version_upgrade = true
+  storage_type               = "standard"
+  engine                     = "postgres"
+  engine_version             = "12"
+  instance_class             = "db.t2.micro"
+  name                       = "mydb"
+  username                   = "foo"
+  password                   = "foobarbaz"
+  skip_final_snapshot        = true
 }
