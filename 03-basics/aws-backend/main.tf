@@ -54,3 +54,4 @@ resource "aws_dynamodb_table" "terraform_locks" {
     type = "S"
   }
 }
+#double check this comment
