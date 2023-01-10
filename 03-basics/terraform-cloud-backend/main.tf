@@ -3,7 +3,7 @@ terraform {
     organization = "devops-directive"
 
     workspaces {
-      name = "devops-directive-terraform-course"
+      name = "devops-directive-terraform"
     }
   }
 
