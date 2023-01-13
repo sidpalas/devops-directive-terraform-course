@@ -45,17 +45,22 @@ resource "aws_instance" "instance_2" {
 }
 
 resource "aws_s3_bucket" "bucket" {
-  bucket        = var.bucket_name
+  bucket_prefix = var.bucket_prefix
   force_destroy = true
-  versioning {
-    enabled = true
-  }
+}
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
+resource "aws_s3_bucket_versioning" "bucket_versioning" {
+  bucket = aws_s3_bucket.bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_crypto_conf" {
+  bucket = aws_s3_bucket.bucket.bucket
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
   }
 }
@@ -202,7 +207,7 @@ resource "aws_db_instance" "db_instance" {
   allocated_storage   = 20
   storage_type        = "standard"
   engine              = "postgres"
-  engine_version      = "12.5"
+  engine_version      = "12"
   instance_class      = "db.t2.micro"
   name                = var.db_name
   username            = var.db_user

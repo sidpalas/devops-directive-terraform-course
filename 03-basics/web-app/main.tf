@@ -44,7 +44,7 @@ resource "aws_instance" "instance_2" {
 }
 
 resource "aws_s3_bucket" "bucket" {
-  bucket        = "devops-directive-web-app-data"
+  bucket_prefix = "devops-directive-web-app-data"
   force_destroy = true
 }
 
@@ -56,7 +56,7 @@ resource "aws_s3_bucket_versioning" "bucket_versioning" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_crypto_conf" {
-  bucket        = aws_s3_bucket.bucket.bucket
+  bucket = aws_s3_bucket.bucket.bucket
   rule {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
@@ -203,7 +203,7 @@ resource "aws_route53_record" "root" {
 }
 
 resource "aws_db_instance" "db_instance" {
-  allocated_storage          = 20
+  allocated_storage = 20
   # This allows any minor version within the major engine_version
   # defined below, but will also result in allowing AWS to auto
   # upgrade the minor version of your DB. This may be too risky
