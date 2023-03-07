@@ -2,7 +2,7 @@ terraform {
   # Assumes s3 bucket and dynamo DB table already set up
   # See /code/03-basics/aws-backend
   backend "s3" {
-    bucket         = "devops-directive-tf-state"
+    bucket         = "global-devops-academy-007"
     key            = "06-organization-and-modules/consul/terraform.tfstate"
     region         = "us-east-1"
     dynamodb_table = "terraform-state-locking"
@@ -32,5 +32,5 @@ provider "aws" {
 ##
 ############################################################
 module "consul" {
-  source = "git@github.com:hashicorp/terraform-aws-consul.git"
+  source = "https://github.com/KoBrane/terraform-aws-consul.git"
 }
