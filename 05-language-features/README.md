@@ -76,7 +76,7 @@ trimspace()
 upper()
 ```
 ### Other function types:
-- Colleciton
+- Collection
 - Encoding
 - Filesystem
 - Date & Time
