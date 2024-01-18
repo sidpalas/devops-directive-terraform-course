@@ -23,5 +23,5 @@ provider "aws" {
 
 # Route53 zone is shared across staging and production
 resource "aws_route53_zone" "primary" {
-  name = "devopsdeployed.com"
+  name = "devopsdeployed-2.com"
 }
